@@ -1,3 +1,19 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Sử Dụng Vị Trí Của Bạn</title>
+    <style>
+        #locationField {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
 <script>
 document.getElementById("getLocationBtn").onclick = function() {
     if (navigator.geolocation) {
@@ -54,3 +70,5 @@ function showError(error) {
     }
 }
 </script>
+</body>
+</html>
