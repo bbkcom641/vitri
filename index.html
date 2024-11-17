@@ -22,10 +22,10 @@ function showPosition(position) {
                 var address = data.address;
                 var fullAddress = `
                     Địa chỉ chi tiết của bạn: 
-                    ${address.house_number || ""} ${address.road || ""}, 
-                    ${address.suburb || address.village || ""}, 
-                    ${address.city || address.town || address.state_district || ""}, 
-                    ${address.state || ""},
+                    ${address.house_number || "Số nhà"} ${address.road || "Số nhà"}, 
+                    ${address.suburb || address.village || "Phường, Xã"}, 
+                    ${address.city || address.town || address.state_district || "Thành Phố"}, 
+                    ${address.state || "Tỉnh"},
                 `;
                 document.getElementById("address").innerText = fullAddress;
             } else {
