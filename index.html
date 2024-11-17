@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation App</title>
+</head>
+<body>
+    <script>
+document.getElementById("getLocationBtn").onclick = function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        alert("Trình duyệt của bạn không hỗ trợ Geolocation.");
+    }
+};
+
+function showPosition(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+
+    // Gửi tọa độ này đến một API như Google Maps để lấy địa chỉ
+    var geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=YOUR_GOOGLE_MAPS_API_KEY`;
+
+    fetch(geocodeUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.results.length > 0) {
+                document.getElementById("address").innerText = "Địa chỉ của bạn: " + data.results[0].formatted_address;
+            } else {
+                document.getElementById("address").innerText = "Không tìm thấy địa chỉ.";
+            }
+        })
+        .catch(error => {
+            document.getElementById("address").innerText = "Không thể lấy địa chỉ.";
+        });
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            document.getElementById("address").innerText = "Bạn đã từ chối việc chia sẻ vị trí.";
+            break;
+        case error.POSITION_UNAVAILABLE:
+            document.getElementById("address").innerText = "Không thể xác định vị trí của bạn.";
+            break;
+        case error.TIMEOUT:
+            document.getElementById("address").innerText = "Yêu cầu vị trí đã hết thời gian.";
+            break;
+        default:
+            document.getElementById("address").innerText = "Đã xảy ra lỗi.";
+            break;
+    }
+}
+</script>
+
+</body>
+</html>
