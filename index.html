@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation App</title>
-</head>
-<body>
-    <script>
+<script>
 document.getElementById("getLocationBtn").onclick = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -19,14 +11,23 @@ function showPosition(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
 
-    // Gửi tọa độ này đến một API như Google Maps để lấy địa chỉ
-    var geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=YOUR_GOOGLE_MAPS_API_KEY`;
+    // Gửi tọa độ này đến API LocationIQ để lấy địa chỉ chi tiết
+    var geocodeUrl = `https://us1.locationiq.com/v1/reverse.php?key=pk.3fb060d4ddb82ae8da4feae7223e2dc7&lat=${latitude}&lon=${longitude}&format=json`;
 
     fetch(geocodeUrl)
         .then(response => response.json())
         .then(data => {
-            if (data.results.length > 0) {
-                document.getElementById("address").innerText = "Địa chỉ của bạn: " + data.results[0].formatted_address;
+            if (data.address) {
+                // Hiển thị thông tin chi tiết địa chỉ
+                var address = data.address;
+                var fullAddress = `
+                    Địa chỉ chi tiết của bạn: 
+                    ${address.house_number || ""} ${address.road || ""}, 
+                    ${address.suburb || address.village || ""}, 
+                    ${address.city || address.town || address.state_district || ""}, 
+                    ${address.state || ""},
+                `;
+                document.getElementById("address").innerText = fullAddress;
             } else {
                 document.getElementById("address").innerText = "Không tìm thấy địa chỉ.";
             }
@@ -53,6 +54,3 @@ function showError(error) {
     }
 }
 </script>
-
-</body>
-</html>
